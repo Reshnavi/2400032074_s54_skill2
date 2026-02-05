@@ -1,0 +1,66 @@
+package com.inventory.dao;
+
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import com.inventory.entity.Product;
+import com.inventory.util.HibernateUtil;
+
+public class ProductDAO {
+
+    public void saveProduct(Product product) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+            session.save(product);
+            tx.commit();
+            System.out.println("Product saved successfully.");
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    public Product getProduct(int id) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            return session.get(Product.class, id);
+        }
+    }
+
+    public void updateProduct(int id, double price, int quantity) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+            Product product = session.get(Product.class, id);
+            if (product != null) {
+                product.setPrice(price);
+                product.setQuantity(quantity);
+                session.update(product);
+                System.out.println("Product with ID " + id + " updated.");
+            } else {
+                System.out.println("Product with ID " + id + " not found.");
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteProduct(int id) {
+        Transaction tx = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            tx = session.beginTransaction();
+            Product product = session.get(Product.class, id);
+            if (product != null) {
+                session.delete(product);
+                System.out.println("Product with ID " + id + " deleted.");
+            } else {
+                System.out.println("Product with ID " + id + " not found.");
+            }
+            tx.commit();
+        } catch (Exception e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+        }
+    }
+}
