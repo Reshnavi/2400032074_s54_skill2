@@ -1,0 +1,4 @@
+INDEX VERSION 1.134+C:\Users\bared\OneDrive\Desktop\FSD SKILL\SKILL2\.metadata\.plugins\org.eclipse.jdt.core
+1865797976.index
+2498447086.index
+4099924742.index
